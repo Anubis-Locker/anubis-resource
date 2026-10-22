@@ -1,0 +1,19 @@
+{
+  "name": "@ai-security-tool/resource",
+  "version": "2.2.1",
+  "description": "Static brand assets for Anubis-Security-Tool (drop-in layout replacement for @electerm/electerm-resource)",
+  "main": "index.js",
+  "scripts": {
+    "build": "node bin/build-assets.js",
+    "build:icons": "node bin/build-brand-icons.js",
+    "verify": "node bin/verify.js"
+  },
+  "files": ["build/**/*", "build-res/**/*", "res/**/*", "src/**/*", "bin/**/*", "README.md"],
+  "keywords": ["anubis", "static", "resource"],
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "png2icons": "^2.0.1",
+    "sharp": "^0.35.5"
+  }
+}
