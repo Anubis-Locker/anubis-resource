@@ -27,6 +27,20 @@ const inventory = {
   'res/imgs/electerm.png': [766, 266],
   'res/imgs/electerm.svg': null
 }
+for (const size of [16, 24, 32, 48, 64, 128, 256, 512]) {
+  inventory[`res/icons/linux/${size}x${size}.png`] = [size, size]
+}
+Object.assign(inventory, {
+  'res/icons/win/icon.ico': null,
+  'res/icons/mac/icon.icns': null,
+  'res/icons/tray/tray-16.png': [16, 16],
+  'res/icons/tray/tray-16@2x.png': [32, 32],
+  'res/icons/tray/tray-32.png': [32, 32],
+  'res/icons/tray/tray-32@2x.png': [64, 64],
+  'res/icons/nsis/installerHeader.bmp': null,
+  'res/icons/nsis/installerSidebar.bmp': null,
+  'res/icons/nsis/uninstallerSidebar.bmp': null
+})
 
 async function main () {
   let bad = 0
@@ -42,6 +56,19 @@ async function main () {
   if (ico.readUInt16LE(2) !== 1) { console.log('BAD ICO'); bad++ }
   const icns = fs.readFileSync(path.join(root, 'build/icons.icns'))
   if (icns.toString('ascii', 0, 4) !== 'icns') { console.log('BAD ICNS'); bad++ }
+  for (const [name, width, height] of [
+    ['installerHeader.bmp', 150, 57],
+    ['installerSidebar.bmp', 164, 314],
+    ['uninstallerSidebar.bmp', 164, 314]
+  ]) {
+    const bitmap = fs.readFileSync(path.join(root, 'res', 'icons', 'nsis', name))
+    if (bitmap.toString('ascii', 0, 2) !== 'BM' ||
+        bitmap.readInt32LE(18) !== width || bitmap.readInt32LE(22) !== height ||
+        bitmap.readUInt16LE(28) !== 24) {
+      console.log('BAD NSIS BITMAP', name)
+      bad++
+    }
+  }
   console.log(bad ? `FAILED (${bad})` : `OK: ${Object.keys(inventory).length} files match inventory`)
   process.exit(bad ? 1 : 0)
 }

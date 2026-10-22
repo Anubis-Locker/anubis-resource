@@ -8,6 +8,7 @@ Design: navy `#0B1220` shield with cyan `#22D3EE`→green `#34D399` outline cont
 ```
 npm install
 npm run build     # bin/build-assets.js from src/icon.svg
+npm run build:icons # platform icons, tray and NSIS bitmaps
 npm run verify    # file list + dimensions vs original inventory
 ```
 
@@ -23,4 +24,7 @@ npm run verify    # file list + dimensions vs original inventory
 | build-res/linux/{16,24,32,48,64,128,256,512,1024}x*.png | square | Linux packages |
 | build-res/appx/Square150x150Logo.png, Square44x44Logo.png, StoreLogo.png (1080), Wide310x150Logo.png | as named | Windows Store/appx |
 
-The original package contains no tray-icons or harmony/static folders; none are generated.
+`npm pack` and `npm publish` generate and verify both asset sets automatically.
+The `res/icons` layout supplies Windows ICO, macOS ICNS, Linux and tray PNGs,
+plus 24-bit NSIS header/sidebar BMPs. These files must be included in the
+published package; checking only the legacy `build` layout is insufficient.
