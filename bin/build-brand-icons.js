@@ -58,9 +58,7 @@ function sidebarSvg () {
   const w = 656
   const h = 1256
   const wm = wordmark(48, 820, w - 96, 300, '#FFFFFF', CYAN)
-  return wrap(w, h, `<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16233D"/><stop offset="1" stop-color="${NAVY}"/></linearGradient></defs>` +
-    `<rect width="${w}" height="${h}" fill="url(#bg)"/>${logoGroup(88, 160, 480)}${wm.svg}` +
-    `<rect x="48" y="1160" width="${w - 96}" height="6" rx="3" fill="${CYAN}" opacity="0.6"/>`)
+  return wrap(w, h, `<rect width="${w}" height="${h}" fill="${NAVY}"/>${logoGroup(88, 160, 480)}${wm.svg}`)
 }
 
 async function main () {

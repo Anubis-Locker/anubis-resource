@@ -7,9 +7,9 @@ const png2icons = require('png2icons')
 
 const root = path.resolve(__dirname, '..')
 const out = (...p) => path.join(root, ...p)
-const NAVY = '#0B1220'
-const CYAN = '#22D3EE'
-const GREEN = '#34D399'
+const NAVY = '#111111'
+const CYAN = '#D4D4D4'
+const GREEN = '#D4D4D4'
 
 const iconSvg = fs.readFileSync(out('src', 'icon.svg'), 'utf8')
 const inner = iconSvg.replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '')
@@ -69,9 +69,20 @@ function lockup (w, h, bg, opacity) {
   return wrap(w, h, `<g opacity="${opacity}">${plate}${logoGroup(pad, (h - iconSize) / 2, iconSize)}${wm.svg}</g>`)
 }
 
-function roundIcon (size) {
-  const s = size * 0.72
-  return wrap(size, size, `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2}" fill="${NAVY}"/>${logoGroup((size - s) / 2, (size - s) / 2, s)}`)
+function suppliedLockup () {
+  const image = fs.readFileSync(out('src', 'background-logo.png')).toString('base64')
+  return wrap(766, 266, `<rect width="766" height="266" rx="24" fill="${NAVY}"/><image x="0" y="0" width="766" height="266" preserveAspectRatio="xMidYMid meet" href="data:image/png;base64,${image}"/>`)
+}
+
+async function watermark () {
+  const { data, info } = await sharp(out('src', 'background-logo.png'))
+    .resize(766, 266, { fit: 'contain', background: '#00000000' })
+    .ensureAlpha().raw().toBuffer({ resolveWithObject: true })
+  for (let i = 3; i < data.length; i += 4) {
+    data[i] = Math.round(data[i] * 0.7)
+  }
+  await sharp(data, { raw: { width: info.width, height: info.height, channels: 4 } }).png({ compressionLevel: 9 })
+    .toFile(out('res', 'imgs', 'electerm-watermark.png'))
 }
 
 const svgOf = (svg) => Buffer.from(svg)
@@ -91,10 +102,10 @@ async function main () {
   await png(icon, 1080, 1080, out('build-res', 'appx', 'StoreLogo.png'))
   await png(lockup(1240, 600, true, 1), 310, 150, out('build-res', 'appx', 'Wide310x150Logo.png'))
 
-  await png(lockup(1532, 532, true, 1), 766, 266, out('res', 'imgs', 'electerm.png'))
-  await png(lockup(1532, 532, false, 0.45), 766, 266, out('res', 'imgs', 'electerm-watermark.png'))
-  await png(roundIcon(1532), 766, 766, out('res', 'imgs', 'electerm-round-128x128.png'))
-  fs.writeFileSync(out('res', 'imgs', 'electerm.svg'), lockup(766, 266, true, 1))
+  await png(suppliedLockup(), 766, 266, out('res', 'imgs', 'electerm.png'))
+  await watermark()
+  await png(icon, 766, 766, out('res', 'imgs', 'electerm-round-128x128.png'))
+  fs.writeFileSync(out('res', 'imgs', 'electerm.svg'), suppliedLockup())
 
   const master = fs.readFileSync(out('build-res', 'linux', '1024x1024.png'))
   const ico = png2icons.createICO(master, png2icons.BICUBIC2, 0, false, true)
