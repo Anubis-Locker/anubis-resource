@@ -1,14 +1,24 @@
-# @ai-security-tool/resource
+# 🎨 Anubis brand resources
 
-Original Anubis-Security-Tool artwork (MIT). Not derived from electerm logos. Same layout and filenames as `@electerm/electerm-resource@2.2.1`, so it is a drop-in replacement.
+Cross-platform application icons, logos and build assets for Anubis-Security-Tool,
+published under `@ai-security-tool/resource`. Existing asset filenames and layouts
+are retained for compatibility.
+
+[Website](https://anubis.locker) · [Desktop](https://github.com/Anubis-Locker/anubis) · [Web](https://github.com/Anubis-Locker/anubis-web)
+
+> The new artwork is a source candidate, not confirmation of an updated installed
+> client or a newly published resource package.
+
+The generated monogram and vector wordmark are original Anubis artwork (MIT).
+The separately supplied PNG has its own provenance below.
 
 Design: a white angular A monogram on a charcoal `#111111` rounded tile,
 with no gradients or decorative shield. The reusable master is `src/icon.svg`.
 Small navigation icons remain the application's existing Lucide monoline set
 (ISC); no third-party icons are redrawn or relicensed here.
 
-The MIT original-artwork statement above applies to the generated monogram and
-vector wordmark, not to the separately supplied logo. `src/background-logo.png`
+The MIT original-artwork statement does not apply to the separately supplied
+logo. `src/background-logo.png`
 is the unmodified, user-provided image downloaded from
 https://loader-api.com/logo.png (1113x224 RGBA; SHA-256
 `0f9bb589b8dbc1d8d6f05141a5b23ec354d4d60fccec29d8e72f3862937a30e8`).
